@@ -32,7 +32,7 @@ const ErasableImage: React.FC<ErasableImageProps> = ({
     const bottomImg = new Image();
     const topImg = new Image();
 
-    // Charger les images
+    // Charger et afficher les images
     bottomImg.src = bottomImage;
     topImg.src = topImage;
 
@@ -55,6 +55,9 @@ const ErasableImage: React.FC<ErasableImageProps> = ({
     const stopErasing = () => {
       isDrawing.current = false;
       lastPosition.current = null;
+
+      // Vérifier si l'image est à 90% effacée
+      checkIfFullyErased();
     };
 
     const erase = (e: MouseEvent) => {
@@ -66,14 +69,35 @@ const ErasableImage: React.FC<ErasableImageProps> = ({
 
       // Effacement en chemin continu
       topCtx.globalCompositeOperation = 'destination-out';
-      topCtx.lineWidth = 80; // Épaisseur de l'effacement
-      topCtx.lineCap = 'round'; // Bordures arrondies
+      topCtx.lineWidth = 80;
+      topCtx.lineCap = 'round';
       topCtx.beginPath();
       topCtx.moveTo(lastPosition.current.x, lastPosition.current.y);
       topCtx.lineTo(x, y);
       topCtx.stroke();
 
       lastPosition.current = { x, y };
+    };
+
+    const checkIfFullyErased = () => {
+      const imageData = topCtx.getImageData(0, 0, width, height);
+      const pixels = imageData.data;
+
+      let transparentCount = 0;
+
+      for (let i = 3; i < pixels.length; i += 4) {
+        if (pixels[i] === 0) {
+          transparentCount++;
+        }
+      }
+
+      const totalPixels = width * height;
+      const transparentRatio = transparentCount / totalPixels;
+
+      if (transparentRatio > 0.9) {
+        // Effacer complètement le canvas
+        topCtx.clearRect(0, 0, width, height);
+      }
     };
 
     // Ajouter les événements
