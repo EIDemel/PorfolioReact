@@ -11,8 +11,8 @@ const HomePage: React.FC = () => {
           <ErasableImage
             topImage={topImage}
             bottomImage={bottomImage}
-            width={430}
-            height={598}
+            width={530}
+            height={698}
           />
         </div>
       </div>
