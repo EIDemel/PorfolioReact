@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Conteneur principal */
+.intro-container {
+    @apply h-screen w-screen bg-gray-100 flex items-center justify-center relative overflow-hidden;
+  }
+  
+  /* Texte d'introduction */
+  .intro-text {
+    @apply absolute text-[10rem] font-bold text-[#8A8181];
+    transform: translateY(-50%);
+  }
+  
+  .intro-text-left {
+    left: calc(50% - 530px / 2 - 150px);
+  }
+  
+  .intro-text-right {
+    right: calc(50% - 530px / 2 - 150px);
+  }
+  
+  /* Conteneur de la carte */
+  .card-container {
+    @apply relative;
+  }
+  
